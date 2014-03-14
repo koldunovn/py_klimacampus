@@ -3,6 +3,11 @@ py_klimacampus
 
 Presentations for KlimaCampus Python meetings.
 
-meeting000 - Intruduction to python meetings. Interpolation between grids with Basemap.
+All announcements about meetings are done through python-friends mailing list. You can [subscribe to it here](https://lists.zmaw.de/mailman/listinfo/python-friends).
 
-meeting001 - Time series analysis with Pandas. 
+List of folders
+==
+
+**meeting000** - Introduction to python meetings. Interpolation between grids with Basemap.
+
+**meeting001** - Time series analysis with Pandas.
