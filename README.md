@@ -12,4 +12,4 @@ List of folders
 
 **meeting001** - Time series analysis with Pandas.
 
-**meeting001** - Virtualenv,  pip, Ipython widgets.
+**meeting003** - Virtualenv,  pip, Ipython widgets.
