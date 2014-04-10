@@ -11,3 +11,5 @@ List of folders
 **meeting000** - Introduction to python meetings. Interpolation between grids with Basemap.
 
 **meeting001** - Time series analysis with Pandas.
+
+**meeting001** - Virtualenv,  pip, Ipython widgets.
