@@ -12,4 +12,9 @@ List of folders
 
 **meeting001** - Time series analysis with Pandas.
 
+**meeting002** - mcocean.
+
 **meeting003** - Virtualenv,  pip, Ipython widgets.
+
+**meeting004** - Seaborn, mpld3, mcocean (see meeting002).
+
