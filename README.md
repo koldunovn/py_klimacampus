@@ -8,13 +8,13 @@ All announcements about meetings are done through the python-friends mailing lis
 List of folders
 ==
 
-**meeting000** - Introduction to python meetings. Interpolation between grids with Basemap.
+**[meeting000](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_000)** - Introduction to python meetings. Interpolation between grids with Basemap.
 
-**meeting001** - Time series analysis with Pandas.
+**[meeting001](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_001)** - Time series analysis with Pandas.
 
-**meeting002** - mcocean.
+**[meeting002](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_002)** - mcocean.
 
-**meeting003** - Virtualenv,  pip, Ipython widgets.
+**[meeting003](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_003)** - Virtualenv,  pip, Ipython widgets.
 
-**meeting004** - Seaborn, mpld3, mcocean (see meeting002).
+**[meeting004](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_004)** - Seaborn, mpld3, mcocean (see meeting002).
 
