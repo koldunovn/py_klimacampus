@@ -14,7 +14,7 @@ List of folders
 
 **[meeting002](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_002)** - mcocean.
 
-**[meeting003](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_003)** - Virtualenv,  pip, Ipython widgets.
+**[meeting003](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_003)** - Virtualenv,  pip, IPython widgets.
 
 **[meeting004](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_004)** - Seaborn, mpld3, mcocean (see meeting002).
 
