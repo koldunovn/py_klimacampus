@@ -18,3 +18,4 @@ List of folders
 
 **[meeting004](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_004)** - Seaborn, mpld3, mcocean (see meeting002).
 
+**[meeting005](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_005)** - All about speed (Multiprocessing, Cython, Numba), effective array operations in numpy.
