@@ -74,6 +74,33 @@ def detrend_norm(x):
 
 def acorr_mskd(x,ret_intts=False):
 	return acorr_mc(x,ret_intts)
+##	"""An \'mcmath\' module function
+##	This function calculates the normed, positive lag autocorrelation function;
+##	even if NaNs or masked array values are present."""
+##	if isinstance(x, np.ma.MaskedArray):
+##		x = x.filled(np.NaN)
+##	M = x.size
+##	R = np.zeros(M)
+
+##	for i in range(M-1):
+##		for j in range(M-1-i):
+##			if (np.isnan(x[j]) or np.isnan(x[i+j])): continue
+##			R[i] = R[i]+x[j]*x[i+j]
+
+##	R = R/R[0]
+
+##	if bool(ret_intts):
+##		R1 = R.copy()
+##		if np.where(R1 < 0)[0].size == 0:
+##			intts = None
+##		else:
+##			atzero = np.where(R1 < 0)[0][0]
+##			xblah=sp.arange(atzero,R1.size)
+##			np.put(R1,xblah,0)
+##			intts = sum(R1)
+##		return [R,intts]
+##	else:
+##		return R
 
 
 def blockave(x,blk,ax=0):
@@ -94,7 +121,12 @@ def blockave(x,blk,ax=0):
 def run_mean_win_mskd(x,win=sig.boxcar(5),cutoff=0):
 	"""An \'mcmath\' module function
 	Calculates the running mean of (masked) array 'x' using a window 'win', which is a passed array;
-	uses a boxcar of width 5 if 'win' is not specified."""
+	uses a boxcar of width 5 if 'win' is not specified.
+
+	Note: You can use a wide variety of window functions from scipy.signal.*, all of which return an array
+	appropriate for use here.  sp.signal.parzen(x) and sp.signal.hamming(x) provide smoother running means
+	than the standard boxcar running mean (where 'x' is the window or averaging length).
+	"""
 	if isinstance(x, np.ma.MaskedArray):
 		x = x.filled(np.NaN)
 	N = len(win)
@@ -119,6 +151,7 @@ def run_mean_win_mskd(x,win=sig.boxcar(5),cutoff=0):
 			new_arr[i] = np.nan
 		else:
 			new_arr[i] = sum / ngood
+	new_arr = new_arr / win.mean()
 	return [new_ind,new_arr]
 
 def run_mean_win_mskd2(x,win=sig.boxcar(5)):
@@ -126,7 +159,12 @@ def run_mean_win_mskd2(x,win=sig.boxcar(5)):
 	"""An \'mcmath\' module function:
 	Just calls 'np.convolve(x,win,mode='valid'), but also returns new index array for
 	independent variable as well.
-	uses a boxcar of width 5 if 'win' is not specified."""
+	uses a boxcar of width 5 if 'win' is not specified.
+
+	Note: You can use a wide variety of window functions from scipy.signal.*, all of which return an array
+	appropriate for use here.  sp.signal.parzen(x) and sp.signal.hamming(x) provide smoother running means
+	than the standard boxcar running mean (where 'x' is the window or averaging length).
+	"""
 	if isinstance(x, np.ma.MaskedArray):
 		x = x.filled(np.NaN)
 	N = len(win)

@@ -2,7 +2,6 @@ import os
 import numpy as np
 from datetime import datetime as dt
 from datetime import timedelta as td
-from pytz import utc
 import scipy.stats as stats
 from matplotlib import font_manager
 import matplotlib as mpl
@@ -62,7 +61,7 @@ def plot1(x,y=None,clrfirst=True,newfig=False,fylim=None,**kwargs):
 
 ### BEGIN dateplt1
 
-def dateplt1(t,y,add=None,yl=10,fxlim=None,fylim=None,fighold=False,nomth=True,**kwargs):
+def dateplt1(t,y,add=None,yl=5,fxlim=None,fylim=None,fighold=False,nomth=False,**kwargs):
 	from matplotlib.dates import YearLocator,DateFormatter,MonthLocator
 	if add is None:
 		ymin = np.nanmin(y) - 0.02 * (abs(np.nanmax(y) - np.nanmin(y)))
@@ -194,7 +193,7 @@ def dateplt1(t,y,add=None,yl=10,fxlim=None,fylim=None,fighold=False,nomth=True,*
 
 ### BEGIN dateplt_m
 
-def dateplt_m(t,y,yl=10,fxlim=None,fylim=None,ticksize=10,nomth=True,fmt='+-',**kwargs):
+def dateplt_m(t,y,yl=5,fxlim=None,fylim=None,ticksize=10,nomth=False,fmt='+-',**kwargs):
 	from matplotlib.dates import YearLocator,DateFormatter,MonthLocator
 	xchange = 0
 	ychange = 0
@@ -287,7 +286,7 @@ def dateplt_m(t,y,yl=10,fxlim=None,fylim=None,ticksize=10,nomth=True,fmt='+-',**
 
 ### BEGIN dateplt_m2
 
-def dateplt_m2(t,y,yl=10,fxlim=None,fylim=None,ticksize=10,nomth=True,fmt='+-',**kwargs):
+def dateplt_m2(t,y,yl=5,fxlim=None,fylim=None,ticksize=10,nomth=False,fmt='+-',**kwargs):
 	"""Different from dateplt_m in that it's just a 2-digit year for x tick marks"""
 	
 	from matplotlib.dates import YearLocator,DateFormatter,MonthLocator
@@ -388,9 +387,6 @@ def longts(t,x,yl=5,fxlim=None,fylim=None,ticksize=10,nomth=False,**kwargs):
 	ax = fig.add_axes((0.07,0.1,0.88,0.8),autoscale_on=False,ylim=(-0.01,0.01))
 	line1 = dateplt_m(t,x,yl=yl,fxlim=fxlim,fylim=fylim,ticksize=ticksize,nomth=nomth,**kwargs)
 	return line1
-
-### END longts
-
 
 def barplt1(x,y,yl=1,width=1,mth=7):
 	from matplotlib.dates import YearLocator,DateFormatter,MonthLocator
@@ -522,7 +518,7 @@ def shade_coord(xin,yin,datain=None,lon0=None):
 			datain = datain[y_ind]
 	yedg = edges(yin)
 	
-	# convert xin to -180:180 range; roll and addcyclic as needed to have lon0 start
+	# convert xin to -180:180 range; roll and addcyclic as needed to have lon0 as central lon
 	xedg = edges(xin)
 	xspan = xedg[-1] - xedg[0]
 	if ((xspan < 365.) & (xspan > 355.)):
@@ -539,13 +535,20 @@ def shade_coord(xin,yin,datain=None,lon0=None):
 
 			if (lon0 is not None):
 				(datain,xin) = addcyclic(datain,xin)
-				(datain,xin) = shiftgrid(lon0,datain,xin)
+				(datain,xin) = shiftgrid(lon0-180,datain,xin)
 
-			xedg = edges(xin)[:-1]
+			xedg = edges(xin)
+
+			## Fix for keeping the squares near the edges of global maps filled just to the edge (map boundary)
+			if (lon0 is not None):
+				if xedg[0] < (lon0-180):
+					xedg[0] = lon0-180
+				if xedg[-1] > (lon0+180):
+					xedg[-1] = lon0+180
 
 			return [xedg,yedg,datain,xin,yin]
 		else:
-			xedg = edges(xin)[:-1]
+			xedg = edges(xin)
 
 	return [xedg,yedg,datain,xin,yin]
 
@@ -559,7 +562,7 @@ def shade_coord(xin,yin,datain=None,lon0=None):
 
 def shade(xin,yin,valsin,proj='cyl',lon0=None,res='c',blat=30,lat0=None,fz=(11.6,5.8),add=None,cbticksize=None,cbticks=None,nocb=None,ex=None,sx=None,xe=None,cllw=1.0,cbnds=None,cbext='both',hatch=None,hatch1=None,hatchmask=None,**kwargs):
 	"""An increasingly complicated function for generating decent graphs of shaded contour plots
-	on the surface of the earth.  This version is really only designed to work with rectangular
+	on the surface of the earth.  This version is really only designed to work with rectilinear
 	grids.  Placement of colorbars in multi-panel figures has proven to be a big problem, and more
 	parameters now exist to try to manage this better in multiple circumstances.
 	Params: xin - longtitude array of data (1-d)
@@ -599,11 +602,11 @@ def shade(xin,yin,valsin,proj='cyl',lon0=None,res='c',blat=30,lat0=None,fz=(11.6
 	xedg,yedg,dataout,xout,yout = shade_coord(xin,yin,valsin,lon0)
 	
 	if proj == 'moll':
-		m1 = Basemap(projection=proj,lon_0=xedg[0]+180,resolution=res)
+		m1 = Basemap(projection=proj,lon_0=lon0,resolution=res)
 	elif proj == 'robin':
-		m1 = Basemap(projection=proj,lon_0=xedg[0]+180,resolution=res)
+		m1 = Basemap(projection=proj,lon_0=lon0,resolution=res)
 ##	elif proj == 'eck4':
-##		m1 = Basemap(projection=proj,lon_0=xedg[0]+180,resolution=res)
+##		m1 = Basemap(projection=proj,lon_0=xedg[0],resolution=res)
 	elif proj == 'cyl':
 		m1 = Basemap(projection=proj,llcrnrlat=yout[0],llcrnrlon=xout[0],
 					 urcrnrlat=yout[-1],urcrnrlon=xout[-1],resolution=res)
@@ -627,13 +630,23 @@ def shade(xin,yin,valsin,proj='cyl',lon0=None,res='c',blat=30,lat0=None,fz=(11.6
 	else:
 		m1 = Basemap(projection=proj,llcrnrlat=yout[0],llcrnrlon=xout[0],
 					 urcrnrlat=yout[-1],urcrnrlon=xout[-1],resolution=res)
+
+
+	## FIX: there is a problem with the splaea projection when one of the
+	## returned latitudes from shade_coord is +90 deg (North).  Then the
+	## Basemap object (here, m1) returns for some longitude map projection
+	## coords 1e30.  To fix this, I scrap the last row of yedg if it's +90 (only for splaea).
+	if proj == 'spl':
+		if yedg[-1] == 90.:
+			yedg = yedg[:-1]
+			dataout = dataout[:-1]
+	
 	(x,y) = m1(*np.meshgrid(xedg,yedg))
 
-##	if (proj=='cyl') | (proj=='npl') | (proj=='spl') | (proj=='laea') | (proj=='tmerc') | (proj=='cass'):
 	m1.drawmapboundary()
 
 	cs = m1.pcolormesh(x,y,dataout,**kwargs)
-
+	
 	m1.drawcoastlines(linewidth=cllw)
 
 	plt.draw()
@@ -721,6 +734,11 @@ def shade(xin,yin,valsin,proj='cyl',lon0=None,res='c',blat=30,lat0=None,fz=(11.6
 
 ####
 ######## BEGIN contourf
+
+### WARNING!  Under construction!!
+### like shade(), but for making plots using contourf instead of pcolormesh
+### plan to add this functionality to shade() once it's finished.
+
 
 def contourf(xin,yin,valsin,proj='cyl',lon0=None,res='c',blat=30,lat0=None,fz=(11.6,5.8),add=None,cbticksize=None,cbticks=None,nocb=None,ex=None,sx=None,xe=None,cllw=1.0,cbnds=None,cbext='both',hatch=None,hatch1=None,hatchmask=None,**kwargs):
 	"""An increasingly complicated function for generating decent graphs of shaded contour plots
