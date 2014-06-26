@@ -9,7 +9,7 @@ def job():
     os.system('ipython nbconvert --to html --template full_noinput.tpl plot_nrt_seaice.ipynb')
 
     ftp = FTP('ftp.zmaw.de')
-    ftp.login(user='guest', passwd='guest')
+    ftp.login(user='youruser', passwd='yourpass')
     ftp.cwd('outgoing/koldunov')
     ffile = open('plot_nrt_seaice.html','rb') 
     ftp.storbinary('STOR plot_nrt_seaice.html', ffile)
