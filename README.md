@@ -22,4 +22,4 @@ List of folders
 
 **[meeting007](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_007)** - Anaconda and Julia language
 
-**[meeting008](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_008)** - Minitoring with IPython notebooks
+**[meeting008](https://github.com/koldunovn/py_klimacampus/tree/master/meeting_008)** - Monitoring with IPython notebooks
