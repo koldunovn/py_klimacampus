@@ -3,7 +3,6 @@ scipy
 python_dateutil
 pyparsing
 pytz
-    
 matplotlib
 pandas
 ipython[all]
@@ -11,6 +10,5 @@ cython
 seaborn
 netCDF4
 mpld3
-seaborn
 llvmpy
 argparse
